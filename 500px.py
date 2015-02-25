@@ -1,3 +1,5 @@
+#!/usr/bin/python3.3
+
 from bs4 import BeautifulSoup
 import urllib.request
 import sys
@@ -10,7 +12,7 @@ def getSource(url):
     return BeautifulSoup(pageSource.decode("utf8"))
 
 def getUrlImage(html):
-	tag = hmtl.find('meta', attrs={'property' : 'og:image', 'content' : True })
+	tag = html  .find('meta', attrs={'property' : 'og:image', 'content' : True })
 	
 	return tag['content']
 	
@@ -23,12 +25,19 @@ def downloadImage(url):
 	html = getSource(url)
 	
 	urlImage = getUrlImage(html)
-	titleImage = getImageTitle(html)
+	titleImage = getImageTitle(html) + ".jpg"
 	
-	request.urlretrieve(urlImage, titleImage)
+	urllib.request.urlretrieve(urlImage, titleImage)
+	
+def printUsage():
+    print("Usage : " + sys.argv[0] + " [url]")
 	
 	
 	
 if __name__ == "__main__":
-	downloadImage(sys.argv[1])
+    
+    if(len(sys.argv) == 2):
+	    downloadImage(sys.argv[1])
+    else:
+	    printUsage()
 	
